@@ -1,0 +1,175 @@
+body {
+	width: 1200px;
+}
+
+#pageBody {
+	display: inline-block;
+	margin: 0 10%;
+	width: 1200px;
+}
+
+.mynav {
+	margin: 0;
+	padding: 0 40px 0 0;
+	height: 40px;
+	/*left: 350px;*/
+	position: relative;
+	/*min-width: 300px*/
+	float: right;
+}
+
+.mynav li {
+	display: inline-block;
+	background: #111111;
+	position: relative;
+	z-index: 500;
+}
+
+.mynav li a {
+	display: block;
+	padding: 0 20px 5px 20px;
+	font-weight: 700;
+	text-decoration: none;
+	color: #FFFFFF;
+	text-align: center;
+	background-color: #009940;
+	height: 25px;
+	margin: 15px 10px 0 0;
+}
+
+.mynav li ul li a {
+	text-decoration: none;
+	background-color: #111111;
+	color: #FFFFFF;
+	/*background-color: #EEA236;
+	color: #992200;*/
+}
+
+.mynav ul {
+	position: absolute;
+	left: 0;
+	margin: 0 0 0 -1px;
+	padding: 0;
+}
+
+.mynav ul li {
+	float: left;
+	width: 100%;
+	white-space: nowrap;
+}
+
+.mynav ul a {
+	display: block;
+	padding: 6px 5px;
+	color: #FFFFFF;
+	text-align: left;
+	height: 30px;
+	margin: auto;
+}
+
+ul.mynav a:hover {
+	text-decoration: none;
+	background-color: #FFFFFF;
+	color: #111111;
+}
+
+ul.mynav li ul li a:hover {
+	text-decoration: none;
+	background-color: #FFFFFF;
+	color: #111111;
+}
+
+#siteLogo {
+	height: 100px;
+	width: 310px;
+	position: relative;
+	left: 20px;
+	top: -30px;
+	padding: 0 0 0 20px;
+	margin: 0 0 0 0;
+}
+
+#siteHeader {
+	height: 130px;
+	width: 1200px;
+	font-family: "Segoe UI sans-serif";
+	float: left;
+	display: inline-block;
+}
+
+#headerContent {
+	height: 40px;
+	top: 45px;
+	left: 0;
+	width: 1200px;
+	background-color: #111111;
+	position: relative;
+	display: inline-block;
+}
+
+.pageContent {
+	width: 60%;
+	font-family: "Segoe UI sans-serif";
+	float: left;
+	height: 1000px;
+	/*overflow-y: auto;*/
+}
+
+.contentLogoContainer {
+	height: 120px;
+	width: 1200px;
+	display: table-cell;
+	vertical-align: middle;
+	float: left;
+	position: relative;
+	margin-bottom: 50px;
+}
+
+.contentLogo {
+	background-color: #EEA236;
+	height: 80px;
+	width: 800px;
+	margin: auto;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.leftNav {
+	float: left;
+	/*background-color: #009940;*/
+	width: 20%;
+	height: 100%;
+	position: relative;
+}
+
+.rightNav {
+	float: left;
+	/*background-color: #124578;*/
+	width: 20%;
+	height: 100%;
+	position: relative;
+}
+
+.contentContainter {
+	width: 1200px;
+	font-family: "Segoe UI sans-serif";
+	/*background-color: #EEA236;*/
+	float: left;
+}
+
+.leftNavAd {
+	width: 200px;
+	height: 167px;
+	position: relative;
+	margin: 20px 20px;
+}
+
+.rightNavAd {
+	width: 200px;
+	height: 680px;
+	position: relative;
+	margin: 20px 20px;
+}

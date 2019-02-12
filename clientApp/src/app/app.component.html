@@ -1,0 +1,46 @@
+<section class="main-app-shell">
+    <div id="pageBody">
+        <div style="height: 15px; width: 100%; float: left; top: 0; position: absolute;"></div>
+        <div id="siteHeader">
+            <div id="headerContent">
+                <ul class="mynav">
+                    <li (mouseover)="showCategories = true" (mouseout)="showCategories = false">
+                        <a>Categories</a>
+                        <ul [style.visibility]="showCategories ? 'visible' : 'hidden'">
+                            <li *ngFor="let category of categories">
+                                <a>{{category.categoryDesc}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li (mouseover)="showUsers = true" (mouseout)="showUsers = false">
+                        <a>Authors</a>
+                        <ul [style.visibility]="showUsers ? 'visible' : 'hidden'">
+                            <li *ngFor="let user of users">
+                                <a>{{user.firstName}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <a routerLink="">
+                    <img src="../assets/ohGnarlyLogo.png" id="siteLogo">
+                </a>
+            </div>
+        </div>
+        <div class="contentLogoContainer">
+            <img class="contentLogo" src="../assets/KillBillbloodsplatterbanner.jpg">
+        </div>
+        <div class="contentContainter">
+            <div class="leftNav">
+                <img src="../assets/leftNav1.png" class="leftNavAd" />
+                <span style="height: 100px; display: block;"></span>
+                <img class="leftNavAd" src="../assets/leftNav2.png" />
+            </div>
+            <div class="pageContent">
+                <router-outlet></router-outlet>
+            </div>
+            <div class="rightNav">
+                <img class="rightNavAd" src="../assets/rightNav.png" />
+            </div>
+        </div>
+    </div>
+</section>
