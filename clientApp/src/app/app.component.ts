@@ -16,9 +16,7 @@ export class AppComponent implements OnInit {
   showCategories: boolean;
   showUsers: boolean;
 
-  constructor(private dataSvc: DataService) {}
-
-  ngOnInit() {
+  constructor(private dataSvc: DataService) {
     this.dataSvc.getUsers().subscribe(users => {
       this.users = users.filter(user => user.userName === 'asmitty92' || user.userName === 'djmurtle');
     });
@@ -26,5 +24,8 @@ export class AppComponent implements OnInit {
     this.dataSvc.getCategories().subscribe(categories => {
       this.categories = categories;
     });
+  }
+
+  ngOnInit() {
   }
 }

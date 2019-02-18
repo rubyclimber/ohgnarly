@@ -3,27 +3,23 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Message } from '../classes/message';
 import { UtilityService } from '../services/utility.service';
 import { DataService } from '../services/data.service';
+import { LoginResponse } from '../classes/login-response';
 
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+  styleUrls: ['./chat.component.css'],
+
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  loginError: boolean;
   userId: string;
-  userName: string;
-  interval: number;
-  password: string;
   messages: Message[];
   message: string;
   postingMessage: boolean;
   notifyInterval: number;
   pageTitle: string;
   notifyTitle: string;
-  processingLogin: boolean;
-
 
   constructor(private utilitySvc: UtilityService, private dataSvc: DataService) {
     this.pageTitle = 'Oh Gnarly';
@@ -31,7 +27,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messages = [];
     this.message = '';
     this.notifyInterval = 0;
-    this.processingLogin = false;
 
     window.onblur = this.focusButton.bind(this);
   }
@@ -47,21 +42,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     return !!this.userId;
   }
 
-  login(): void {
-    this.loginError = false;
-    this.processingLogin = true;
+  login(loginResp: LoginResponse): void {
+    if (loginResp.success) {
+      this.userId = loginResp.userId;
 
-    this.dataSvc.login(this.userName, this.password).subscribe(loginResp => {
-      if (loginResp.success) {
-        this.userId = loginResp.userId;
-
-        if (this.isAuthenticated()) {
-          window.setTimeout(this.getMessages.bind(this), 1, false);
-          this.subscribeToMessageEvent();
-        }
+      if (this.isAuthenticated()) {
+        window.setTimeout(this.getMessages.bind(this), 1);
+        this.subscribeToMessageEvent();
       }
-      this.processingLogin = false;
-    });
+    }
   }
 
   subscribeToMessageEvent() {
@@ -70,9 +59,9 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe(this.loadMessage.bind(this));
   }
 
-  getMessages(polling: boolean): void {
+  getMessages(): void {
     this.dataSvc.getMessages().subscribe(msgs => {
-      this.processMessages(msgs, polling);
+      this.processMessages(msgs);
     });
   }
 
@@ -93,29 +82,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  submitMessage(): void {
-    if (this.message.trim().length === 0) {
-      this.focusText();
-      return;
-    }
-
-    this.postingMessage = true;
-
-    const message: Message = {
-      messageBody: this.message,
-      userId: this.userId,
-      _id: ''
-    };
-
-    this.dataSvc.addMessage(message).subscribe(msgs => {
-      this.postingMessage = false;
-      this.message = '';
-      // this.getMessages(false);
-      this.processMessages(msgs, false);
-      window.setTimeout(this.focusText.bind(this));
-    });
-  }
-
   submitMessageSocket(): void {
     if (this.message.trim().length === 0) {
       this.focusText();
@@ -128,12 +94,6 @@ export class ChatComponent implements OnInit, OnDestroy {
       _id: ''
     };
 
-    // this.postingMessage = true;
-
-    // this.dataSvc.addMessage(message).subscribe(() => {
-    //   this.postingMessage = false;
-    //   this.message = '';
-    // });
     this.dataSvc.emit('server-message', message);
     this.message = '';
   }
@@ -173,47 +133,18 @@ export class ChatComponent implements OnInit, OnDestroy {
     document.getElementById('message-field').onfocus = undefined;
   }
 
-  processMessages(messages: Message[], polling: boolean) {
-    let messageAdded = false;
-    if (messages.length !== this.messages.length) {
-      for (const msg of messages) {
-        if (!this.utilitySvc.contains(this.messages, msg._id)) {
-          msg.messageBody = msg.messageBody.replace(/\n/g, '<br />');
-          const matches = this.utilitySvc.isUrl(msg.messageBody);
-          if (matches) {
-            for (const match of matches) {
-              msg.messageBody = msg.messageBody.replace(match, `<a class="gnarly-anchor" href="${match}" target="_blank">${match}</a>`);
-            }
-          }
-          messageAdded = true;
-          this.messages.push(msg);
-        }
-      }
-
-      const messageInput = document.getElementById('message-field');
-      if (messageInput !== document.activeElement && this.notifyInterval === 0 && this.message.length === 0 && messageAdded) {
-        const lastMessage = this.messages[this.messages.length - 1];
-        let lastMessageFromOtherUser = false;
-        if (lastMessage) {
-          lastMessageFromOtherUser = lastMessage.userId !== this.userId;
-        }
-
-        if (polling && lastMessageFromOtherUser) {
-          this.startToggle();
-          window.onfocus = this.focusText.bind(this);
-          messageInput.onfocus = this.stopToggle.bind(this);
-        }
-      }
-
-      if (messageAdded) {
-        window.setTimeout(() => {
-          const chatWindow = document.getElementById('chat-window');
-          if (chatWindow) {
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-          }
-        });
-      }
+  processMessages(messages: Message[]) {
+    for (const msg of messages) {
+      msg.messageBody = this.processMessageBody(msg.messageBody);
+      this.messages.push(msg);
     }
+
+    window.setTimeout(() => {
+      const chatWindow = document.getElementById('chat-window');
+      if (chatWindow) {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+    });
   }
 
   loadMessage(data: {}): void {
@@ -242,6 +173,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   processMessageBody(messageBody: string) {
+    messageBody = messageBody.replace(/\n/g, '<br />');
     const matches = this.utilitySvc.isUrl(messageBody);
     if (matches) {
       for (const match of matches) {
