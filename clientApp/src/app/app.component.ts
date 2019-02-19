@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from './classes/category';
 import { User } from './classes/user';
-import { environment } from '../environments/environment';
 import { DataService } from './services/data.service';
-import { UrlResolver } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +22,10 @@ export class AppComponent implements OnInit {
     this.dataSvc.getCategories().subscribe(categories => {
       this.categories = categories;
     });
+  }
+
+  isLoggedIn(): boolean {
+    return false;
   }
 
   ngOnInit() {

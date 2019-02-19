@@ -3,7 +3,7 @@
         <div style="height: 15px; width: 100%; float: left; top: 0; position: absolute;"></div>
         <div id="siteHeader">
             <div id="headerContent">
-                <ul class="mynav">
+                <ul class="mynav" *ngIf="isLoggedIn()">
                     <li (mouseover)="showCategories = true" (mouseout)="showCategories = false">
                         <a>Categories</a>
                         <ul [style.visibility]="showCategories ? 'visible' : 'hidden'">

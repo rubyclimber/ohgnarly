@@ -1,0 +1,15 @@
+<section class="chat-widget-view">
+	<div class="contentBoxHeader">
+		<h3>Chat App</h3>
+  	</div>
+	<div class="contentBox">
+		<div class="content">
+			<div *ngIf="!isAuthenticated()">
+				<app-login (loginEvent)="login($event)"></app-login>
+			</div>
+			<div *ngIf="isAuthenticated()">
+        <app-chat [userId]="userId"></app-chat>
+      </div>
+    </div>
+  </div>
+</section>

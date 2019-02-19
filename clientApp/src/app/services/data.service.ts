@@ -8,8 +8,12 @@ import { environment } from '../../environments/environment';
 import { Category } from '../classes/category';
 import { User } from '../classes/user';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataService extends Socket {
+  apiKey: string;
+  userId: string;
 
   constructor(private httpClient: HttpClient) {
     super({url: environment.socketUrl, options: {}});
@@ -31,7 +35,7 @@ export class DataService extends Socket {
 
   login(userName: string, password: string): Observable<LoginResponse> {
     const options = {
-      headers: this.getHeaders()
+      headers: this.getHeaders(false)
     };
     return this.httpClient.post<LoginResponse>(
       `${environment.socketUrl}/chat-login`,
@@ -54,7 +58,23 @@ export class DataService extends Socket {
     return this.httpClient.get<User[]>(`${environment.socketUrl}/users`, options);
   }
 
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders().append('api-key', 'M1lxUG7MdBbvsaPEjono+w==').append('sender', 'ohGnarlyChat');
+  setApiKey(apiKey: string) {
+    this.apiKey = apiKey;
+  }
+
+  setUserId(userId: string) {
+    this.userId = userId;
+  }
+
+  getUserId(): string {
+    return this.userId;
+  }
+
+  private getHeaders(useApiKey: boolean = true): HttpHeaders {
+    let headers = new HttpHeaders().append('sender', 'ohGnarlyChat');
+    if (useApiKey) {
+      headers = headers.append('api-key', this.apiKey);
+    }
+    return headers;
   }
 }

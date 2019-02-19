@@ -1,9 +1,8 @@
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Message } from '../classes/message';
 import { UtilityService } from '../services/utility.service';
 import { DataService } from '../services/data.service';
-import { LoginResponse } from '../classes/login-response';
 
 
 @Component({
@@ -13,7 +12,7 @@ import { LoginResponse } from '../classes/login-response';
 
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  userId: string;
+  @Input() userId: string;
   messages: Message[];
   message: string;
   postingMessage: boolean;
@@ -28,35 +27,49 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.message = '';
     this.notifyInterval = 0;
 
-    window.onblur = this.focusButton.bind(this);
+    window.onblur = (() => {
+      const button = document.getElementById('sendButton');
+      if (button) {
+        button.focus();
+      }
+    }).bind(this);
   }
 
   ngOnInit() {
+    setTimeout(this.getMessages.bind(this), 1);
+
+    const loadMessage = (data: {}): void => {
+      const message = data as Message;
+      message.messageBody = this.processMessageBody(message.messageBody);
+      this.messages.push(message);
+
+      const messageInput = document.getElementById('message-field');
+      if (messageInput !== document.activeElement
+        && this.notifyInterval === 0
+        && this.message.length === 0
+        && message.userId !== this.userId) {
+        if (message.userId !== this.userId) {
+          this.startToggle();
+          window.onfocus = this.focusText.bind(this);
+          messageInput.onfocus = this.stopToggle.bind(this);
+        }
+      }
+
+      window.setTimeout(() => {
+        const chatWindow = document.getElementById('chat-window');
+        if (chatWindow) {
+          chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+      });
+    };
+
+    this.dataSvc
+      .fromEvent('chat-message')
+      .subscribe(loadMessage.bind(this));
   }
 
   ngOnDestroy() {
     this.dataSvc.emit('disconnect', {});
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.userId;
-  }
-
-  login(loginResp: LoginResponse): void {
-    if (loginResp.success) {
-      this.userId = loginResp.userId;
-
-      if (this.isAuthenticated()) {
-        window.setTimeout(this.getMessages.bind(this), 1);
-        this.subscribeToMessageEvent();
-      }
-    }
-  }
-
-  subscribeToMessageEvent() {
-    this.dataSvc
-      .fromEvent('chat-message')
-      .subscribe(this.loadMessage.bind(this));
   }
 
   getMessages(): void {
@@ -102,13 +115,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     document.getElementById('message-field').focus();
   }
 
-  focusButton(): void {
-    const button = document.getElementById('sendButton');
-    if (button) {
-      button.focus();
-    }
-  }
-
   startToggle(): void {
     document.title = this.notifyTitle;
     // this.notifyUser();
@@ -137,31 +143,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     for (const msg of messages) {
       msg.messageBody = this.processMessageBody(msg.messageBody);
       this.messages.push(msg);
-    }
-
-    window.setTimeout(() => {
-      const chatWindow = document.getElementById('chat-window');
-      if (chatWindow) {
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-      }
-    });
-  }
-
-  loadMessage(data: {}): void {
-    const message = data as Message;
-    message.messageBody = this.processMessageBody(message.messageBody);
-    this.messages.push(message);
-
-    const messageInput = document.getElementById('message-field');
-    if (messageInput !== document.activeElement
-      && this.notifyInterval === 0
-      && this.message.length === 0
-      && message.userId !== this.userId) {
-      if (message.userId !== this.userId) {
-        this.startToggle();
-        window.onfocus = this.focusText.bind(this);
-        messageInput.onfocus = this.stopToggle.bind(this);
-      }
     }
 
     window.setTimeout(() => {
