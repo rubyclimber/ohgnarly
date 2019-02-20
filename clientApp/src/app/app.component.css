@@ -2,6 +2,14 @@ body {
 	width: 1200px;
 }
 
+.heading-space {
+  height: 15px;
+  width: 100%;
+  float: left;
+  top: 0;
+  position: absolute;
+}
+
 #pageBody {
 	display: inline-block;
 	margin: 0 10%;

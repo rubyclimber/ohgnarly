@@ -46,14 +46,14 @@ export class DataService extends Socket {
 
   getCategories(): Observable<Category[]> {
     const options = {
-      headers: this.getHeaders()
+      headers: this.getHeaders(false)
     };
     return this.httpClient.get<Category[]>(`${environment.socketUrl}/categories`, options);
   }
 
   getUsers(): Observable<User[]> {
     const options = {
-      headers: this.getHeaders()
+      headers: this.getHeaders(false)
     };
     return this.httpClient.get<User[]>(`${environment.socketUrl}/users`, options);
   }

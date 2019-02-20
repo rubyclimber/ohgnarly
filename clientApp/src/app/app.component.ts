@@ -15,6 +15,13 @@ export class AppComponent implements OnInit {
   showUsers: boolean;
 
   constructor(private dataSvc: DataService) {
+  }
+
+  isLoggedIn(): boolean {
+    return true;
+  }
+
+  ngOnInit() {
     this.dataSvc.getUsers().subscribe(users => {
       this.users = users.filter(user => user.userName === 'asmitty92' || user.userName === 'djmurtle');
     });
@@ -22,12 +29,5 @@ export class AppComponent implements OnInit {
     this.dataSvc.getCategories().subscribe(categories => {
       this.categories = categories;
     });
-  }
-
-  isLoggedIn(): boolean {
-    return false;
-  }
-
-  ngOnInit() {
   }
 }
