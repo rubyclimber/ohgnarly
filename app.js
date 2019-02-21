@@ -9,13 +9,24 @@ const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const debug = require('debug')('ohgnarly:server');
 
+/**
+ * Load settings by environment
+ */
+let environment = process.env.NODE_ENV || 'development';
+let settings;
+if (environment === 'production') {
+    settings = require('./settings');
+} else {
+    settings = require(`./setting.${environment}`);
+}
 
 /**
  * Configure express app
  * */
 let app = express();
-console.log(process.env)
 let port = normalizePort(process.env.PORT || '3000');
+
+
 app.set('port', port);
 
 app.listen(port)
