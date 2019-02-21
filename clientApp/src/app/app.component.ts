@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.dataSvc.getUsers().subscribe(users => {
-      this.users = users.filter(user => user.userName === 'asmitty92' || user.userName === 'djmurtle');
+      this.users = users;
     });
 
     this.dataSvc.getCategories().subscribe(categories => {
