@@ -14,6 +14,7 @@ const debug = require('debug')('ohgnarly:server');
  * Configure express app
  * */
 let app = express();
+console.log(process.env)
 let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
