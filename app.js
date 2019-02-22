@@ -17,7 +17,7 @@ let settings;
 if (environment === 'production') {
     settings = require('./settings');
 } else {
-    settings = require(`./setting.${environment}`);
+    settings = require(`./settings.${environment}`);
 }
 
 /**
