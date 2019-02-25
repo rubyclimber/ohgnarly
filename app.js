@@ -12,8 +12,7 @@ const debug = require('debug')('ohgnarly:server');
 /**
  * Load settings by environment
  */
-let environment = process.env.NODE_ENV || 'staging';
-console.log(environment);
+let environment = process.env.NODE_ENV || 'development';
 let settings;
 if (environment === 'production') {
     settings = require('./settings');
