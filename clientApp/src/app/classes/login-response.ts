@@ -1,5 +1,5 @@
 export class LoginResponse {
     success: boolean;
     userId: string;
-    apiKey: string;
+    socketUrl: string;
 }

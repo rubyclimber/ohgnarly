@@ -63,13 +63,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       });
     };
 
-    this.dataSvc
+    this.dataSvc.socketService
       .fromEvent('chat-message')
       .subscribe(loadMessage.bind(this));
   }
 
   ngOnDestroy() {
-    this.dataSvc.emit('disconnect', {});
+    this.dataSvc.socketService.emit('disconnect', {});
   }
 
   getMessages(): void {
@@ -107,7 +107,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       _id: ''
     };
 
-    this.dataSvc.emit('server-message', message);
+    this.dataSvc.socketService.emit('server-message', message);
     this.message = '';
   }
 

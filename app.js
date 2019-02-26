@@ -26,6 +26,7 @@ if (environment === 'production') {
 let app = express();
 let port = normalizePort(process.env.PORT || '3000');
 
+let index = require('./routes/index')(settings);
 
 app.set('port', port);
 
@@ -43,6 +44,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', index);
 
 /**
  * Helper functions used in configuration. 

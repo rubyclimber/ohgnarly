@@ -1,0 +1,1 @@
+module.exports.apiUrl = "https://ohgnarly3.herokuapp.com";

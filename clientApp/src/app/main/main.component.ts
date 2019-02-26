@@ -21,8 +21,8 @@ export class MainComponent implements OnInit {
 
   login(loginResp: LoginResponse): void {
     if (loginResp.success) {
-      this.dataSvc.setApiKey(loginResp.apiKey);
       this.userId = loginResp.userId;
+      this.dataSvc.setSocketService(loginResp.socketUrl);
     }
   }
 }
