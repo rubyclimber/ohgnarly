@@ -12,7 +12,7 @@ import { DataService } from '../services/data.service';
 
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  @Input() userId: string;
+  userId: string;
   messages: Message[];
   message: string;
   postingMessage: boolean;
@@ -26,6 +26,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messages = [];
     this.message = '';
     this.notifyInterval = 0;
+    this.userId = this.dataSvc.getUserId();
 
     window.onblur = (() => {
       const button = document.getElementById('sendButton');

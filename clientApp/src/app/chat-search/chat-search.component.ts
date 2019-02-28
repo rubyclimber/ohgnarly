@@ -8,23 +8,28 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./chat-search.component.css']
 })
 export class ChatSearchComponent implements OnInit {
-  @Input() userId: string;
+  userId: string;
   messages: Message[];
-  searchDate: string;
+  searchDate: Date;
+  isSearching: boolean;
 
-  constructor(private dataSvc: DataService) { }
+  constructor(private dataSvc: DataService) {
+    this.userId = this.dataSvc.getUserId();
+    this.isSearching = false;
+  }
 
   ngOnInit() {
   }
 
   searchMessages() {
-    console.log(this.searchDate);
     if (!this.searchDate) {
       return;
     }
 
+    this.isSearching = true;
     this.dataSvc.messageSearch(this.searchDate).subscribe(messages => {
       this.messages = messages;
+      this.isSearching = false;
     });
   }
 }

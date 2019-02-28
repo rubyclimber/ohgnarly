@@ -20,12 +20,12 @@ export class MainComponent implements OnInit {
   }
 
   isAuthenticated(): boolean {
-    return !!this.userId;
+    return !!this.dataSvc.userId;
   }
 
   login(loginResp: LoginResponse): void {
     if (loginResp.success) {
-      this.userId = loginResp.userId;
+      this.dataSvc.setUserId(loginResp.userId);
       this.dataSvc.setSocketService(loginResp.socketUrl);
     }
   }

@@ -48,7 +48,7 @@ export class DataService {
     this.socketService = new SocketService(socketUrl);
   }
 
-  messageSearch(searchDate: string): Observable<Message[]> {
+  messageSearch(searchDate: Date): Observable<Message[]> {
     const data = {
       searchDate: searchDate
     };

@@ -1,21 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MainComponent } from './main/main.component';
+import { ChatComponent } from './chat/chat.component';
+import { ChatSearchComponent } from './chat-search/chat-search.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent,
-    data: {
-      mode: 'chat'
-    }
+    component: ChatComponent
   },
   {
     path: 'chat-search',
-    component: MainComponent,
-    data: {
-      mode: 'chat-search'
-    }
+    component: ChatSearchComponent
   }
 ];
 

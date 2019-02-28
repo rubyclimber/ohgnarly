@@ -9,7 +9,7 @@
         <input class="form-control" type="date" [(ngModel)]="searchDate" />
       </div>
       <div class="col-xs-6">
-        <button type="button" class="btn btn-gnarly" (click)="searchMessages()">Search</button>
+        <button type="button" class="btn btn-gnarly" (click)="searchMessages()" [disabled]="isSearching">Search</button>
       </div>
     </div>
 	</div>
