@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginResponse } from '../classes/login-response';
 import { DataService } from '../services/data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -9,10 +10,13 @@ import { DataService } from '../services/data.service';
 })
 export class MainComponent implements OnInit {
   userId: string;
+  mode: string;
 
-  constructor(private dataSvc: DataService) { }
+  constructor(private dataSvc: DataService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.mode = this.route.snapshot.data['mode'];
   }
 
   isAuthenticated(): boolean {

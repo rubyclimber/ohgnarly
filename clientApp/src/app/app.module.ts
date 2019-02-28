@@ -13,6 +13,8 @@ import { LoginComponent } from './login/login.component';
 
 import { SocketIoModule } from 'ngx-socket-io';
 import { MainComponent } from './main/main.component';
+import { MessageViewerComponent } from './message-viewer/message-viewer.component';
+import { ChatSearchComponent } from './chat-search/chat-search.component';
 
 // const config: SocketIoConfig = { url: 'http://localhost:8988', options: {} };
 
@@ -22,7 +24,9 @@ import { MainComponent } from './main/main.component';
     ChatComponent,
     HomeComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    MessageViewerComponent,
+    ChatSearchComponent
   ],
   imports: [
     BrowserModule,

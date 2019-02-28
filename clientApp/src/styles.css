@@ -158,6 +158,27 @@ a.gnarly-anchor {
 	margin: 0;
 }
 
+.chat-window {
+  height: 300px;
+  overflow-y: scroll;
+  border: 1px solid #000 !important;
+}
+
+.chat-row {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.btn-gnarly {
+  background-color: #009940;
+  color: white;
+}
+
+.btn-gnarly:hover {
+  background-color: black;
+  color: white;
+}
+
 @media (max-width: 1000px) {
 	.rightNav {
 		display: none;
@@ -250,3 +271,4 @@ a.gnarly-anchor {
 		left: 0;
 	}
 }
+

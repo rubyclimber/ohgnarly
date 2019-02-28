@@ -1,0 +1,5 @@
+<div>
+  <div class="row" style="margin-bottom: 10px;" *ngFor="let message of messages">
+    <div [class]="messageFormat(message.userId)" [innerHTML]="message.messageBody" [title]="message.createdAt | date: 'MM/dd/yyyy HH:mm:ss'" data-toggle="tooltip" style="word-wrap: break-word; white-space: normal;"></div>
+  </div>
+</div>

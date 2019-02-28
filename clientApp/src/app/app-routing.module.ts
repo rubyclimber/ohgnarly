@@ -5,7 +5,17 @@ import { MainComponent } from './main/main.component';
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent
+    component: MainComponent,
+    data: {
+      mode: 'chat'
+    }
+  },
+  {
+    path: 'chat-search',
+    component: MainComponent,
+    data: {
+      mode: 'chat-search'
+    }
   }
 ];
 

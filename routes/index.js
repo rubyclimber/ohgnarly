@@ -16,6 +16,8 @@ module.exports = function(settings) {
 
     router.get('/categories', getToApi);
 
+    router.post('/messages', postToApi);
+
     function postToApi(req, res) {
         request.post(settings.apiUrl + req.originalUrl,
             {json: true, body: req.body, headers: customHeaders},

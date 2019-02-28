@@ -1,0 +1,16 @@
+<div id="chat-window" tabindex="5000" class="chat-window col-xs-12">
+  <app-message-viewer [messages]="messages" [userId]="userId"></app-message-viewer>
+</div>
+<div class="required-field-block negate-padding">
+	<div class="input-group col-xs-12 search-controls">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-8">
+      <div class="col-xs-6">
+        <input class="form-control" type="date" [(ngModel)]="searchDate" />
+      </div>
+      <div class="col-xs-6">
+        <button type="button" class="btn btn-gnarly" (click)="searchMessages()">Search</button>
+      </div>
+    </div>
+	</div>
+</div>

@@ -78,14 +78,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  messageFormat(userId: string): string {
-    if (userId === this.userId) {
-      return 'text-gnarly pull-left col-xs-6';
-    } else {
-      return 'text-primary pull-right col-xs-6';
-    }
-  }
-
   submitOnEnter(event: KeyboardEvent): boolean {
     if (event.which === 13 && !event.shiftKey) {
       this.submitMessageSocket();

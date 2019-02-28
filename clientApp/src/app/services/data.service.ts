@@ -47,4 +47,12 @@ export class DataService {
   setSocketService(socketUrl: string) {
     this.socketService = new SocketService(socketUrl);
   }
+
+  messageSearch(searchDate: string): Observable<Message[]> {
+    const data = {
+      searchDate: searchDate
+    };
+
+    return this.httpClient.post<Message[]>('/messages', data);
+  }
 }

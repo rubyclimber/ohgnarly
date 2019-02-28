@@ -1,9 +1,5 @@
 <div id="chat-window" tabindex="5000" class="chat-window col-xs-12">
-	<div>
-		<div class="row" style="margin-bottom: 10px;" *ngFor="let message of messages">
-			<div [class]="messageFormat(message.userId)" [innerHTML]="message.messageBody" [title]="message.createdAt | date: 'MM/dd/yyyy HH:mm:ss'" data-toggle="tooltip" style="word-wrap: break-word; white-space: normal;"></div>
-		</div>
-	</div>
+  <app-message-viewer [messages]="messages" [userId]="userId"></app-message-viewer>
 </div>
 <div class="required-field-block negate-padding">
 	<div class="input-group col-xs-12">
