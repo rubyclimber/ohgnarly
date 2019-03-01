@@ -92,17 +92,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   startToggle(): void {
-    try {
       document.title = this.notifyTitle;
 
       this.notifyInterval = window.setInterval(() => {
         document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
       }, 1000);
-
-      console.log(this.notifyInterval);
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   notifyUser(): void {
