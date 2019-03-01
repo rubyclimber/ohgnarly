@@ -45,7 +45,9 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.messages.push(message);
 
       const messageInput = document.getElementById('message-field');
-      if (messageInput !== document.activeElement
+      console.log(document.activeElement);
+      if (messageInput
+        && messageInput !== document.activeElement
         && this.notifyInterval === 0
         && this.message.length === 0
         && message.userId !== this.userId) {
@@ -71,6 +73,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.dataSvc.socketService.emit('disconnect', {});
+    const messageField = document.getElementById('message-field');
+    if (messageField) {
+      messageField.onfocus = undefined;
+    }
   }
 
   getMessages(): void {
@@ -105,7 +111,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   focusText(): void {
-    document.getElementById('message-field').focus();
+    const messageField = document.getElementById('message-field');
+    if (messageField) {
+      messageField.focus();
+    }
   }
 
   startToggle(): void {
@@ -125,11 +134,15 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   stopToggle(): void {
+    console.log(window);
     window.clearInterval(this.notifyInterval);
     this.notifyInterval = 0;
     document.title = this.pageTitle;
     window.onfocus = undefined;
-    document.getElementById('message-field').onfocus = undefined;
+    const messageField = document.getElementById('message-field');
+    if (messageField) {
+      messageField.onfocus = undefined;
+    }
   }
 
   processMessages(messages: Message[]) {

@@ -3,7 +3,7 @@
 </div>
 <div class="required-field-block negate-padding">
 	<div class="input-group col-xs-12">
-		<textarea id="message-field" rows="3" size="30" value="" class="form-control" [(ngModel)]="message" [disabled]="postingMessage" (keypress)="submitOnEnter($event)" maxlength="500"></textarea>
+		<textarea id="message-field" tabindex="0" rows="3" size="30" value="" class="form-control" [(ngModel)]="message" [disabled]="postingMessage" (keypress)="submitOnEnter($event)" maxlength="500"></textarea>
 		<span class="input-group-addon"><button id="sendButton" (click)="submitMessageSocket()" [disabled]="postingMessage">Send</button></span>
 	</div>
 </div>
