@@ -39,40 +39,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit() {
     setTimeout(this.getMessages.bind(this), 1);
 
-    const loadMessage = (data: {}): void => {
-      const message = data as Message;
-      message.messageBody = this.processMessageBody(message.messageBody);
-      this.messages.push(message);
-
-      const messageInput = document.getElementById('message-field');
-      console.log(document.activeElement);
-      if (messageInput
-        && messageInput !== document.activeElement
-        && this.notifyInterval === 0
-        && this.message.length === 0
-        && message.userId !== this.userId) {
-        if (message.userId !== this.userId) {
-          this.startToggle();
-          window.onfocus = this.focusText.bind(this);
-          messageInput.onfocus = this.stopToggle.bind(this);
-        }
-      }
-
-      window.setTimeout(() => {
-        const chatWindow = document.getElementById('chat-window');
-        if (chatWindow) {
-          chatWindow.scrollTop = chatWindow.scrollHeight;
-        }
-      });
-    };
-
     this.dataSvc.socketService
       .fromEvent('chat-message')
-      .subscribe(loadMessage.bind(this));
+      .subscribe(this.loadMessage.bind(this));
   }
 
   ngOnDestroy() {
     this.dataSvc.socketService.emit('disconnect', {});
+    this.dataSvc.socketService.removeAllListeners();
     const messageField = document.getElementById('message-field');
     if (messageField) {
       messageField.onfocus = undefined;
@@ -118,12 +92,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   startToggle(): void {
-    document.title = this.notifyTitle;
-    // this.notifyUser();
-    this.notifyInterval = window.setInterval(() => {
-      document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle; },
-      1000
-    );
+    try {
+      document.title = this.notifyTitle;
+
+      this.notifyInterval = window.setInterval(() => {
+        document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
+      }, 1000);
+
+      console.log(this.notifyInterval);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   notifyUser(): void {
@@ -134,7 +113,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   stopToggle(): void {
-    console.log(window);
     window.clearInterval(this.notifyInterval);
     this.notifyInterval = 0;
     document.title = this.pageTitle;
@@ -168,5 +146,31 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     }
     return messageBody;
+  }
+
+  loadMessage(data) {
+    const message = data as Message;
+    message.messageBody = this.processMessageBody(message.messageBody);
+    this.messages.push(message);
+
+    const messageInput = document.getElementById('message-field');
+    if (messageInput
+      && messageInput !== document.activeElement
+      && this.notifyInterval === 0
+      && this.message.length === 0
+      && message.userId !== this.userId) {
+      if (message.userId !== this.userId) {
+        this.startToggle();
+        window.onfocus = this.focusText.bind(this);
+        messageInput.onfocus = this.stopToggle.bind(this);
+      }
+    }
+
+    window.setTimeout(() => {
+      const chatWindow = document.getElementById('chat-window');
+      if (chatWindow) {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+    });
   }
 }
