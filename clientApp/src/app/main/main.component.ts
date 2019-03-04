@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginResponse } from '../classes/login-response';
 import { DataService } from '../services/data.service';
 import { ActivatedRoute } from '@angular/router';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
   userId: string;
   mode: string;
 
@@ -17,6 +17,10 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.mode = this.route.snapshot.data['mode'];
+  }
+
+  ngOnDestroy() {
+    this.dataSvc.setUserId(undefined);
   }
 
   isAuthenticated(): boolean {
