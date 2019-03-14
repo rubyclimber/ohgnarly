@@ -20,4 +20,9 @@ export class UtilityService {
     const regExp = new RegExp(expression, 'g');
     return str.match(regExp);
   }
+
+  today(): string {
+    let now = new Date();
+    return `${now.getMonth()}/${now.getDate()}/${now.getFullYear}`;
+  }
 }
