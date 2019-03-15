@@ -55,6 +55,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   getMessages(): void {
     let today = this.utilitySvc.today();
+    console.log(today);
     this.dataSvc.messageSearch({searchDate: today}).subscribe(msgs => {
       this.processMessages(msgs);
     });
