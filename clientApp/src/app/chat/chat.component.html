@@ -1,4 +1,4 @@
-<div id="chat-window" tabindex="5000" class="chat-window col-xs-12">
+<div id="chat-window" tabindex="5000" class="chat-window col-xs-12" (scroll)="onWindowScroll()">
   <app-message-viewer [messages]="messages" [userId]="userId"></app-message-viewer>
 </div>
 <div class="required-field-block negate-padding">

@@ -17,8 +17,8 @@ export class DataService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getMessages(): Observable<Message[]> {
-    return this.httpClient.get<Message[]>('/messages');
+  getMessages(pageNumber: number): Observable<Message[]> {
+    return this.httpClient.get<Message[]>(`/messages?pageNumber=${pageNumber}`);
   }
 
   login(userName: string, password: string): Observable<LoginResponse> {

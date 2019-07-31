@@ -19,6 +19,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   notifyInterval: number;
   pageTitle: string;
   notifyTitle: string;
+  pageNumber: number;
+  currentScrollHeight: number;
 
   constructor(private utilitySvc: UtilityService, private dataSvc: DataService) {
     this.pageTitle = 'Oh Gnarly';
@@ -26,6 +28,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messages = [];
     this.message = '';
     this.notifyInterval = 0;
+    this.pageNumber = 0;
     this.userId = this.dataSvc.getUserId();
 
     window.onblur = (() => {
@@ -37,7 +40,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    setTimeout(this.getMessages.bind(this), 1);
+    setTimeout(this.getMessages.bind(this), 1, true);
 
     this.dataSvc.socketService
       .fromEvent('chat-message')
@@ -53,11 +56,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  getMessages(): void {
+  getMessages(scrollToBottom: boolean = true): void {
     let today = this.utilitySvc.today();
-    console.log(today);
-    this.dataSvc.messageSearch({searchDate: today}).subscribe(msgs => {
+    this.currentScrollHeight = document.getElementById('chat-window').scrollHeight || 0;
+    this.dataSvc.getMessages(this.pageNumber).subscribe(msgs => {
       this.processMessages(msgs);
+
+      let scrollFunction = scrollToBottom ? this.scrollToBottom : this.maintainScollPosition;
+      setTimeout(scrollFunction.bind(this), 1);
     });
   }
 
@@ -122,15 +128,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   processMessages(messages: Message[]) {
     for (const msg of messages) {
       msg.messageBody = this.processMessageBody(msg.messageBody);
-      this.messages.push(msg);
     }
 
-    window.setTimeout(() => {
-      const chatWindow = document.getElementById('chat-window');
-      if (chatWindow) {
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-      }
-    });
+    this.messages = messages.concat(this.messages);
   }
 
   processMessageBody(messageBody: string) {
@@ -162,11 +162,28 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     }
 
-    window.setTimeout(() => {
-      const chatWindow = document.getElementById('chat-window');
-      if (chatWindow) {
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-      }
-    });
+    setTimeout(this.scrollToBottom.bind(this), 1);
+  }
+
+  onWindowScroll() {
+    const chatWindow = document.getElementById('chat-window');
+    if (chatWindow && chatWindow.scrollTop == 0) {
+      this.pageNumber += 1;
+      this.getMessages(false);
+    }
+  }
+
+  scrollToBottom() {
+    const chatWindow = document.getElementById('chat-window');
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  }
+
+  maintainScollPosition() {
+    const chatWindow = document.getElementById('chat-window');
+    if (chatWindow) {
+      chatWindow.scrollTop = chatWindow.scrollHeight - this.currentScrollHeight;
+    }
   }
 }
