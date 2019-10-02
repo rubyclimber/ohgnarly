@@ -42,6 +42,9 @@ h3 {
 	text-align: center;
 }
 
+.chat-image {
+  max-width: 100%;
+}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/

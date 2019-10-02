@@ -138,7 +138,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     const matches = this.utilitySvc.isUrl(messageBody);
     if (matches) {
       for (const match of matches) {
-        messageBody = messageBody.replace(match, `<a class="gnarly-anchor" href="${match}" target="_blank">${match}</a>`);
+        if (this.isImage(match)) {
+          messageBody = messageBody.replace(match,
+            `<a class="gnarly-anchor" href="${match}" target="_blank"><img class="chat-image" src="${match}" alt="${match}"/></a>`);
+        } else {
+          messageBody = messageBody.replace(match, `<a class="gnarly-anchor" href="${match}" target="_blank">${match}</a>`);
+        }
       }
     }
     return messageBody;
@@ -167,7 +172,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   onWindowScroll() {
     const chatWindow = document.getElementById('chat-window');
-    if (chatWindow && chatWindow.scrollTop == 0) {
+    if (chatWindow && chatWindow.scrollTop === 0) {
       this.pageNumber += 1;
       this.getMessages(false);
     }
@@ -185,5 +190,22 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (chatWindow) {
       chatWindow.scrollTop = chatWindow.scrollHeight - this.currentScrollHeight;
     }
+  }
+
+  private isImage(match: string): boolean {
+    const imageExtensions = [
+      '.jpg',
+      '.png',
+      '.jpeg',
+      '.bmp',
+      '.svg',
+      '.gif',
+      '.tif',
+      '.tiff',
+      '.webp',
+      '.apng'
+    ];
+    const index = match.lastIndexOf('.');
+    return index > 0 && imageExtensions.indexOf(match.substring(index)) >= 0;
   }
 }
