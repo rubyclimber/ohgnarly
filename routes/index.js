@@ -1,7 +1,6 @@
 module.exports = function(settings) {
     const express = require('express');
     const request = require('request');
-
     const router = express.Router();
     const customHeaders = {
         'api-key': 'M1lxUG7MdBbvsaPEjono+w==', 
