@@ -41,6 +41,5 @@ module.exports = function(settings) {
                 res.send(body);
             });
     }
-
     return router;
 }
