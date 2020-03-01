@@ -18,7 +18,7 @@ module.exports = function(settings) {
     router.post('/messages', postToApi);
 
     function postToApi(req, res) {
-        request.post(settings.apiUrl + req.originalUrl,
+        request.post(settings.apiUrl() + req.originalUrl,
             {json: true, body: req.body, headers: customHeaders},
             (err, resp, body) => {
                 if (err) {
@@ -30,8 +30,7 @@ module.exports = function(settings) {
     }
 
     function getToApi(req, res) {
-        console.log(settings.apiUrl);
-        request.get(settings.apiUrl + req.originalUrl,
+        request.get(settings.apiUrl() + req.originalUrl,
             {json: true, headers: customHeaders},
             (err, resp, body) => {
                 if (err) {
