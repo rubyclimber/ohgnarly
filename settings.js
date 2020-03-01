@@ -1,1 +1,11 @@
-module.exports.apiUrl = "https://ohgnarly3.herokuapp.com";
+module.exports.apiUrl = () => {
+    return process.env.GNARLY_API;
+};
+
+module.exports.apiKey = () => {
+    return process.env.API_KEY;
+}
+
+module.exports.apiSender = () => {
+    return process.env.API_SENDER;
+}

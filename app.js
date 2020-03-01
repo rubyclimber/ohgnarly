@@ -8,17 +8,14 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const debug = require('debug')('ohgnarly:server');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 /**
  * Load settings by environment
  */
-let environment = process.env.NODE_ENV || 'development';
-let settings;
-if (environment === 'production') {
-    settings = require('./settings');
-} else {
-    settings = require(`./settings.${environment}`);
-}
+const settings = require('./settings');
 
 /**
  * Configure express app

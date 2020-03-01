@@ -3,8 +3,8 @@ module.exports = function(settings) {
     const request = require('request');
     const router = express.Router();
     const customHeaders = {
-        'api-key': 'M1lxUG7MdBbvsaPEjono+w==', 
-        'sender': 'ohGnarlyChat'
+        'api-key': settings.apiKey(), 
+        'sender': settings.apiSender()
     }
 
     router.get('/users', getToApi);
@@ -30,6 +30,7 @@ module.exports = function(settings) {
     }
 
     function getToApi(req, res) {
+        console.log(settings.apiUrl);
         request.get(settings.apiUrl + req.originalUrl,
             {json: true, headers: customHeaders},
             (err, resp, body) => {
