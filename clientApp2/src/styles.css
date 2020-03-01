@@ -1,0 +1,276 @@
+body {
+  font-size: 1.75em;
+  font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+  color: #232323;
+  background-color: #fff;
+}
+
+header,
+footer,
+nav,
+section {
+  display: block;
+}
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+  border: 1px solid #ddd;
+  padding: 0 1.4em 1.4em 1.4em;
+  margin: 0 0 1.5em 0;
+}
+
+legend {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+textarea {
+  min-height: 75px;
+}
+
+.editor-label {
+  margin: 1em 0 0 0;
+}
+
+.editor-field {
+  margin: 0.5em 0 0 0;
+}
+
+h3 {
+  text-align: center;
+}
+
+.chat-image {
+  max-width: 100%;
+}
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+  color: #f00;
+}
+
+.field-validation-valid {
+  display: none;
+}
+
+.input-validation-error {
+  border: 1px solid #f00;
+  background-color: #fee;
+}
+
+.validation-summary-errors {
+  font-weight: bold;
+  color: #f00;
+}
+
+.validation-summary-valid {
+  display: none;
+}
+
+.error {
+  color: red;
+}
+
+.errorMessage {
+  text-align: center;
+  height: 100px;
+  width: 100%;
+  line-height: 100px;
+}
+
+.errorMessage span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+div.splash-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.page-splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1f1f1f;
+  opacity: 0.2;
+  pointer-events: auto;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: opacity 0.1s linear;
+  -moz-transition: opacity 0.1s linear;
+  -o-transition: opacity 0.1s linear;
+  transition: opacity 0.1s linear;
+}
+
+.page-splash-message {
+  background: #fff;
+  border: 1px solid #dddddd;
+  text-align: center;
+  margin: 10% 0 0 0;
+  font-size: 400%;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  -webkit-text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: monospace;
+  color: #f58a00;
+  padding: 0;
+  max-width: 1100px;
+}
+
+.page-progress-bar {
+  margin: 10% 30%;
+}
+
+.page-progress-bar {
+  margin: 10% 30%;
+}
+
+a.gnarly-anchor {
+  color: yellow;
+  text-decoration: underline;
+}
+
+.contentPreview,
+.content {
+  padding: 30px 10px;
+  text-align: center;
+}
+
+.contentBox {
+  border-radius: 0 0 40px 40px;
+  border: 15px solid #009940;
+  margin: 0 0 10% 0;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.contentBoxHeader {
+  border-radius: 40px 40px 0 0;
+  border: 15px solid #111111;
+  background-color: #111111;
+  color: #ffffff;
+  margin: 0;
+}
+
+.chat-window {
+  height: 300px;
+  overflow-y: scroll;
+  border: 1px solid #000 !important;
+}
+
+.chat-row {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.btn-gnarly {
+  background-color: #009940;
+  color: white;
+}
+
+.btn-gnarly:hover {
+  background-color: black;
+  color: white;
+}
+
+@media (max-width: 1000px) {
+  .rightNav {
+    display: none;
+  }
+  .pageContent {
+    width: 80%;
+  }
+  #pageBody {
+    width: 1000px;
+  }
+  #siteHeader {
+    width: 1000px;
+  }
+  #headerContent {
+    width: 1000px;
+  }
+  .contentLogoContainer {
+    width: 1000px;
+  }
+  .contentContainer {
+    width: 1000px;
+  }
+  .leftNavAd {
+    width: 160px;
+    height: 134px;
+    position: relative;
+    margin: 20px 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  #pageBody {
+    margin: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .leftNav {
+    display: none;
+  }
+  .pageContent {
+    width: 100%;
+  }
+  #pageBody {
+    width: 800px;
+  }
+  #siteHeader {
+    width: 800px;
+  }
+  #headerContent {
+    width: 800px;
+  }
+  .contentLogoContainer {
+    display: none;
+  }
+  .contentContainter {
+    width: 800px;
+  }
+}
+
+@media (max-width: 450px) {
+  .pageContent {
+    width: 100%;
+  }
+  #pageBody {
+    width: 400px;
+  }
+  #siteHeader {
+    width: 400px;
+    height: 65px;
+  }
+  #headerContent {
+    width: 400px;
+    height: 20px;
+    top: 22px;
+  }
+  .contentLogoContainer {
+    width: 400px;
+  }
+  .contentContainter {
+    width: 400px;
+  }
+  .mynav {
+    display: none;
+  }
+  #siteLogo {
+    height: 50px;
+    width: 155px;
+    top: -15px;
+    left: 0;
+  }
+}

@@ -1,0 +1,14 @@
+<div *ngIf="loginError">
+  <label class="error">Invalid User Name and/or Password!</label>
+    </div>
+<div>
+  <label for="userName" class="editor-label loginLabel">User Name:</label>
+  <input id="userName" name="userName" [(ngModel)]="userName" type="text" class="editor-field loginInput" />
+</div>
+<div>
+  <label for="password" class="editor-label loginLabel">Password:</label>
+  <input id="password" name="password" type="password" [(ngModel)]="password" class="editor-field loginInput" />
+</div>
+<div class="buttonBar">
+  <button id="login-btn" class="btn btn-gnarly" [disabled]="processingLogin" (click)="login()">Login</button>
+</div>
