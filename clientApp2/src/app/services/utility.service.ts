@@ -22,7 +22,7 @@ export class UtilityService {
   }
 
   today(): string {
-    let now = new Date();
+    const now = new Date();
     return `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`;
   }
 }

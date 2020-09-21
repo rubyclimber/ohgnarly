@@ -7,7 +7,7 @@
 </div>
 <div>
   <label for="password" class="editor-label loginLabel">Password:</label>
-  <input id="password" name="password" type="password" [(ngModel)]="password" class="editor-field loginInput" />
+  <input id="password" name="password" type="password" [(ngModel)]="password" class="editor-field loginInput" (keypress)="submitOnEnter($event)" />
 </div>
 <div class="buttonBar">
   <button id="login-btn" class="btn btn-gnarly" [disabled]="processingLogin" (click)="login()">Login</button>

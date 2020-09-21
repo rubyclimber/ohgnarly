@@ -37,4 +37,13 @@ export class LoginComponent implements OnInit {
       console.log(error);
     });
   }
+
+  submitOnEnter(event: KeyboardEvent): boolean {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      this.login();
+      return false;
+    }
+
+    return true;
+  }
 }

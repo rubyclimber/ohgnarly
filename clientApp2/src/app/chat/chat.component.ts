@@ -21,6 +21,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   notifyTitle: string;
   pageNumber: number;
   currentScrollHeight: number;
+  messageInterval: number;
 
   constructor(private utilitySvc: UtilityService, private dataSvc: DataService) {
     this.pageTitle = 'Oh Gnarly';
@@ -29,6 +30,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.message = '';
     this.notifyInterval = 0;
     this.pageNumber = 0;
+    this.messageInterval = 0;
     this.userId = this.dataSvc.getUserId();
 
     window.onblur = (() => {
@@ -40,35 +42,38 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    setTimeout(this.getMessages.bind(this), 1, true);
+    setTimeout(this.getMessages.bind(this), 1, true, this.processMessages.bind(this));
+    this.messageInterval = window.setInterval(
+      this.getMessages.bind(this), 1000, true, this.processNewMessages.bind(this));
 
-    this.dataSvc.socketService
-      .fromEvent('chat-message')
-      .subscribe(this.loadMessage.bind(this));
+    // this.dataSvc.socketService
+    //   .fromEvent('chat-message')
+    //   .subscribe(this.loadMessage.bind(this));
   }
 
   ngOnDestroy() {
-    this.dataSvc.socketService.emit('disconnect', {});
-    this.dataSvc.socketService.removeAllListeners();
+    // this.dataSvc.socketService.emit('disconnect', {});
+    // this.dataSvc.socketService.removeAllListeners();
     const messageField = document.getElementById('message-field');
+    window.clearInterval(this.messageInterval);
+    this.messageInterval = 0;
     if (messageField) {
       messageField.onfocus = undefined;
     }
   }
 
-  getMessages(scrollToBottom: boolean = true): void {
-    let today = this.utilitySvc.today();
+  getMessages(scrollToBottom: boolean = true, messageHandler: (msgs: Message[]) => void): void {
     this.currentScrollHeight = document.getElementById('chat-window').scrollHeight || 0;
     this.dataSvc.getMessages(this.pageNumber).subscribe(msgs => {
-      this.processMessages(msgs);
+      messageHandler(msgs);
 
-      let scrollFunction = scrollToBottom ? this.scrollToBottom : this.maintainScollPosition;
+      const scrollFunction = scrollToBottom ? this.scrollToBottom : this.maintainScollPosition;
       setTimeout(scrollFunction.bind(this), 1);
     });
   }
 
   submitOnEnter(event: KeyboardEvent): boolean {
-    if (event.which === 13 && !event.shiftKey) {
+    if (event.key === 'Enter' && !event.shiftKey) {
       this.submitMessageSocket();
       return false;
     }
@@ -174,7 +179,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const chatWindow = document.getElementById('chat-window');
     if (chatWindow && chatWindow.scrollTop === 0) {
       this.pageNumber += 1;
-      this.getMessages(false);
+      this.getMessages(false, this.processMessages);
     }
   }
 
@@ -189,6 +194,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     const chatWindow = document.getElementById('chat-window');
     if (chatWindow) {
       chatWindow.scrollTop = chatWindow.scrollHeight - this.currentScrollHeight;
+    }
+  }
+
+  processNewMessages(messages: Message[]): void {
+    for (const msg of messages) {
+      msg.messageBody = this.processMessageBody(msg.messageBody);
+
+      if (!this.messages.some(m => m._id === msg._id)) {
+        this.messages.push(msg);
+      }
     }
   }
 

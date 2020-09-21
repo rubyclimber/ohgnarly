@@ -3,3 +3,4 @@
 /*.env
 hack\.html
 **/node_modules
+.idea

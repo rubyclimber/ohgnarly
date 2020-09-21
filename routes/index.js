@@ -17,6 +17,8 @@ module.exports = function(settings) {
 
     router.post('/messages', postToApi);
 
+    router.post('/message', postToApi);
+
     function postToApi(req, res) {
         request.post(settings.apiUrl() + req.originalUrl,
             {json: true, body: req.body, headers: customHeaders},
