@@ -104,22 +104,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  startToggle(message: Message): void {
-    const messageInput = document.getElementById('message-field');
-    if (messageInput
-      && messageInput !== document.activeElement
-      && this.notifyInterval === 0
-      && this.message.length === 0
-      && message.userId !== this.userId) {
-      if (message.userId !== this.userId) {
-        document.title = this.notifyTitle;
-        this.notifyInterval = window.setInterval(() => {
-          document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
-        }, 1000);
-        window.onfocus = this.focusText.bind(this);
-        messageInput.onfocus = this.stopToggle.bind(this);
-      }
-    }
+  startToggle(): void {
+    document.title = this.notifyTitle;
+    this.notifyInterval = window.setInterval(() => {
+      document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
+    }, 1000);
   }
 
   notifyUser(): void {
@@ -168,7 +157,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const message = data as Message;
     message.messageBody = this.processMessageBody(message.messageBody);
     this.messages.push(message);
-    this.startToggle(message);
+    this.startToggle();
 
     setTimeout(this.scrollToBottom.bind(this), 1);
   }
@@ -196,12 +185,23 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   processNewMessages(messages: Message[]): void {
-    for (const msg of messages) {
-      msg.messageBody = this.processMessageBody(msg.messageBody);
+    for (const message of messages) {
+      message.messageBody = this.processMessageBody(message.messageBody);
 
-      if (!this.messages.some(m => m._id === msg._id)) {
-        this.messages.push(msg);
-        this.startToggle(msg);
+      if (!this.messages.some(m => m._id === message._id)) {
+        this.messages.push(message);
+        const messageInput = document.getElementById('message-field');
+        if (messageInput
+          && messageInput !== document.activeElement
+          && this.notifyInterval === 0
+          && this.message.length === 0
+          && message.userId !== this.userId) {
+          if (message.userId !== this.userId) {
+            this.startToggle();
+            window.onfocus = this.focusText.bind(this);
+            messageInput.onfocus = this.stopToggle.bind(this);
+          }
+        }
       }
     }
   }
