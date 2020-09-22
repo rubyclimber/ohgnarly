@@ -67,7 +67,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.dataSvc.getMessages(this.pageNumber).subscribe(msgs => {
       messageHandler(msgs);
 
-      const scrollFunction = scrollToBottom ? this.scrollToBottom : this.maintainScollPosition;
+      const scrollFunction = scrollToBottom ? this.scrollToBottom : this.maintainScrollPosition;
       setTimeout(scrollFunction.bind(this), 1);
     });
   }
@@ -104,12 +104,22 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  startToggle(): void {
-      document.title = this.notifyTitle;
-
-      this.notifyInterval = window.setInterval(() => {
-        document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
-      }, 1000);
+  startToggle(message: Message): void {
+    const messageInput = document.getElementById('message-field');
+    if (messageInput
+      && messageInput !== document.activeElement
+      && this.notifyInterval === 0
+      && this.message.length === 0
+      && message.userId !== this.userId) {
+      if (message.userId !== this.userId) {
+        document.title = this.notifyTitle;
+        this.notifyInterval = window.setInterval(() => {
+          document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
+        }, 1000);
+        window.onfocus = this.focusText.bind(this);
+        messageInput.onfocus = this.stopToggle.bind(this);
+      }
+    }
   }
 
   notifyUser(): void {
@@ -158,19 +168,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const message = data as Message;
     message.messageBody = this.processMessageBody(message.messageBody);
     this.messages.push(message);
-
-    const messageInput = document.getElementById('message-field');
-    if (messageInput
-      && messageInput !== document.activeElement
-      && this.notifyInterval === 0
-      && this.message.length === 0
-      && message.userId !== this.userId) {
-      if (message.userId !== this.userId) {
-        this.startToggle();
-        window.onfocus = this.focusText.bind(this);
-        messageInput.onfocus = this.stopToggle.bind(this);
-      }
-    }
+    this.startToggle(message);
 
     setTimeout(this.scrollToBottom.bind(this), 1);
   }
@@ -190,7 +188,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  maintainScollPosition() {
+  maintainScrollPosition() {
     const chatWindow = document.getElementById('chat-window');
     if (chatWindow) {
       chatWindow.scrollTop = chatWindow.scrollHeight - this.currentScrollHeight;
@@ -203,6 +201,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
       if (!this.messages.some(m => m._id === msg._id)) {
         this.messages.push(msg);
+        this.startToggle(msg);
       }
     }
   }
