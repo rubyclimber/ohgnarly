@@ -1,8 +1,8 @@
-
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Message } from '../classes/message';
-import { UtilityService } from '../services/utility.service';
-import { DataService } from '../services/data.service';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Message} from '../classes/message';
+import {UtilityService} from '../services/utility.service';
+import {DataService} from '../services/data.service';
+import {interval, Subscription, timer} from 'rxjs';
 
 
 @Component({
@@ -16,21 +16,21 @@ export class ChatComponent implements OnInit, OnDestroy {
   messages: Message[];
   message: string;
   postingMessage: boolean;
-  notifyInterval: number;
+  notifyInterval: Subscription;
   pageTitle: string;
   notifyTitle: string;
   pageNumber: number;
   currentScrollHeight: number;
-  messageInterval: number;
+  messageInterval: Subscription;
 
   constructor(private utilitySvc: UtilityService, private dataSvc: DataService) {
     this.pageTitle = 'Oh Gnarly';
     this.notifyTitle = 'New Message';
     this.messages = [];
     this.message = '';
-    this.notifyInterval = 0;
+    this.notifyInterval = undefined;
     this.pageNumber = 0;
-    this.messageInterval = 0;
+    this.messageInterval = undefined;
     this.userId = this.dataSvc.getUserId();
 
     window.onblur = (() => {
@@ -43,23 +43,15 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     setTimeout(this.getMessages.bind(this), 1, true, this.processMessages.bind(this));
-    this.messageInterval = window.setInterval(
-      this.getMessages.bind(this), 1000, true, this.processNewMessages.bind(this));
 
-    // this.dataSvc.socketService
-    //   .fromEvent('chat-message')
-    //   .subscribe(this.loadMessage.bind(this));
+    this.dataSvc.socketService
+      .fromEvent('chat-message')
+      .subscribe(this.loadMessage.bind(this));
   }
 
   ngOnDestroy() {
-    // this.dataSvc.socketService.emit('disconnect', {});
-    // this.dataSvc.socketService.removeAllListeners();
-    const messageField = document.getElementById('message-field');
-    window.clearInterval(this.messageInterval);
-    this.messageInterval = 0;
-    if (messageField) {
-      messageField.onfocus = undefined;
-    }
+    this.dataSvc.socketService.emit('disconnect', {});
+    this.dataSvc.socketService.removeAllListeners();
   }
 
   getMessages(scrollToBottom: boolean = true, messageHandler: (msgs: Message[]) => void): void {
@@ -104,11 +96,22 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  startToggle(): void {
-    document.title = this.notifyTitle;
-    this.notifyInterval = window.setInterval(() => {
-      document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
-    }, 1000);
+  startToggle(message: Message): void {
+    const messageInput = document.getElementById('message-field');
+    if (messageInput
+      && messageInput !== document.activeElement
+      && this.notifyInterval === undefined
+      && this.message.length === 0
+      && message.userId !== this.userId) {
+      if (message.userId !== this.userId) {
+        document.title = this.notifyTitle;
+        this.notifyInterval = interval(1000).subscribe(() => {
+          document.title = document.title === this.notifyTitle ? this.pageTitle : this.notifyTitle;
+        });
+        window.onfocus = this.focusText.bind(this);
+        messageInput.onfocus = this.stopToggle.bind(this);
+      }
+    }
   }
 
   notifyUser(): void {
@@ -119,8 +122,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   stopToggle(): void {
-    window.clearInterval(this.notifyInterval);
-    this.notifyInterval = 0;
+    this.notifyInterval.unsubscribe();
+    this.notifyInterval = undefined;
     document.title = this.pageTitle;
     window.onfocus = undefined;
     const messageField = document.getElementById('message-field');
@@ -157,7 +160,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const message = data as Message;
     message.messageBody = this.processMessageBody(message.messageBody);
     this.messages.push(message);
-    this.startToggle();
+    this.startToggle(message);
 
     setTimeout(this.scrollToBottom.bind(this), 1);
   }
@@ -190,18 +193,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
       if (!this.messages.some(m => m._id === message._id)) {
         this.messages.push(message);
-        const messageInput = document.getElementById('message-field');
-        if (messageInput
-          && messageInput !== document.activeElement
-          && this.notifyInterval === 0
-          && this.message.length === 0
-          && message.userId !== this.userId) {
-          if (message.userId !== this.userId) {
-            this.startToggle();
-            window.onfocus = this.focusText.bind(this);
-            messageInput.onfocus = this.stopToggle.bind(this);
-          }
-        }
+        this.startToggle(message);
       }
     }
   }
