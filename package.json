@@ -9,7 +9,7 @@
     "serve": "node dist/app.js",
     "postinstall": "npm-run-all build-ng build-ts",
     "build-ts": "tsc",
-    "build-ng": "pushd clientApp2 && ng build --prod && popd"
+    "build-ng": "cd clientApp2 && ng build --prod && cd .."
   },
   "repository": {
     "type": "git",
