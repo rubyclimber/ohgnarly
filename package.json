@@ -9,7 +9,7 @@
     "serve": "node dist/app.js",
     "postinstall": "npm-run-all build-ng build-ts",
     "build-ts": "tsc",
-    "build-ng": "cd clientApp2 && ng build --prod && cd .."
+    "build-ng": "cd clientApp2 && npm install && ng build --prod && cd .."
   },
   "repository": {
     "type": "git",
@@ -29,10 +29,6 @@
     "socket.io": "^2.4.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1102.8",
-    "@angular/cli": "^9.0.4",
-    "@angular/compiler": "^11.2.9",
-    "@angular/compiler-cli": "^11.2.9",
     "@types/body-parser": "^1.19.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/debug": "^4.1.5",
