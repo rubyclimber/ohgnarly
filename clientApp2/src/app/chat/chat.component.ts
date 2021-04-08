@@ -82,7 +82,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const message: Message = {
       messageBody: this.message,
       userId: this.userId,
-      _id: ''
+      _id: undefined
     };
 
     this.dataSvc.socketService.emit('server-message', message);
@@ -169,7 +169,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const chatWindow = document.getElementById('chat-window');
     if (chatWindow && chatWindow.scrollTop === 0) {
       this.pageNumber += 1;
-      this.getMessages(false, this.processMessages);
+      this.getMessages(false, this.processMessages.bind(this));
     }
   }
 
