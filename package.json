@@ -7,9 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run serve",
     "serve": "node dist/app.js",
-    "postinstall": "npm-run-all build-ng build-ts",
-    "build-ts": "tsc",
-    "build-ng": "cd clientApp2 && npm install && ng build --prod && cd .."
+    "postinstall": "npm run build-ts",
+    "build-ts": "tsc"
   },
   "repository": {
     "type": "git",

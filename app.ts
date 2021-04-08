@@ -31,8 +31,8 @@ app.on('error', onError);
 /**
  * Configure routes and middleware components
  * */
-const appRoot = __dirname;//.replace('/dist', '')
-console.log(path.join(appRoot, 'public', 'favicon.ico'));
+const appRoot = __dirname.replace('/dist', '')
+console.log('Aaron', path.join(appRoot, 'public', 'favicon.ico'));
 app.use(favicon(path.join(appRoot, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
