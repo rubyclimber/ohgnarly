@@ -1,5 +1,5 @@
 import { Message } from '../classes/message';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoginResponse } from '../classes/login-response';
@@ -24,7 +24,7 @@ export class DataService {
   login(userName: string, password: string): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(
       'chat-login',
-      {userName: userName, password: password}
+      {userName, password}
     );
   }
 
